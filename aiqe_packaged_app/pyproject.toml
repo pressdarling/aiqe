@@ -1,0 +1,16 @@
+[build-system]
+requires = ["uv-build>=0.2"]
+build-backend = "uv_build"
+
+[project]
+name = "ai-query-enhancer"
+version = "0.1.0"
+description = "Enhance AI tool queries; packaged CLI"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["click>=8.0", "pydantic>=2.0"]
+authors = [{name = "Brady Clarke"}]
+license = {text = "MIT"}
+
+[project.scripts]
+aiqe = "ai_query_enhancer.cli:main"
