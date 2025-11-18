@@ -38,7 +38,9 @@ def should_append_year(query: str) -> bool:
 
 def process_hook_input() -> None:
     """Main hook processing function."""
+    input_data = None
     try:
+        # Read stdin once and store for potential reuse
         input_data = json.load(sys.stdin)
         tool_input = input_data.get('tool_input', {})
         query = tool_input.get('query', '')
@@ -75,8 +77,7 @@ def process_hook_input() -> None:
 
     except Exception as e:
         # On error, pass through original input unchanged
-        try:
-            input_data = json.load(sys.stdin)
+        if input_data is not None:
             output = {
                 'hookSpecificOutput': {
                     'hookEventName': 'PreToolUse',
@@ -84,8 +85,8 @@ def process_hook_input() -> None:
                 }
             }
             print(json.dumps(output))
-        except:
-            # Fallback empty response
+        else:
+            # Fallback empty response if input_data couldn't be read
             print(json.dumps({'hookSpecificOutput': {'hookEventName': 'PreToolUse', 'modifiedToolInput': {}}}))
         sys.exit(1)
 
