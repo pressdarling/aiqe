@@ -77,17 +77,14 @@ def process_hook_input() -> None:
 
     except Exception as e:
         # On error, pass through original input unchanged
-        if input_data is not None:
-            output = {
-                'hookSpecificOutput': {
-                    'hookEventName': 'PreToolUse',
-                    'modifiedToolInput': input_data.get('tool_input', {})
-                }
+        modified_tool_input = input_data.get('tool_input', {}) if input_data is not None else {}
+        output = {
+            'hookSpecificOutput': {
+                'hookEventName': 'PreToolUse',
+                'modifiedToolInput': modified_tool_input
             }
-            print(json.dumps(output))
-        else:
-            # Fallback empty response if input_data couldn't be read
-            print(json.dumps({'hookSpecificOutput': {'hookEventName': 'PreToolUse', 'modifiedToolInput': {}}}))
+        }
+        print(json.dumps(output))
         sys.exit(1)
 
 
