@@ -17,7 +17,7 @@ from typing import Dict, Any, Optional
 
 def has_year_reference(query: str) -> bool:
     """Check if query contains a year reference (2000-2099)."""
-    return bool(re.search(r'20\d{2}', query))
+    return bool(re.search(r'\b20\d{2}\b', query))
 
 
 def has_temporal_keywords(query: str) -> bool:
