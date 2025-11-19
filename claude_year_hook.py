@@ -10,30 +10,9 @@ Automatically adds the current year to search queries that lack temporal context
 
 import json
 import sys
-import re
 from datetime import datetime
-from typing import Dict, Any, Optional
 
-
-def has_year_reference(query: str) -> bool:
-    """Check if query contains a year reference (2000-2099)."""
-    return bool(re.search(r'20\d{2}', query))
-
-
-def has_temporal_keywords(query: str) -> bool:
-    """Check if query contains temporal keywords indicating recency."""
-    temporal_words = [
-        'latest', 'recent', 'current', 'new', 'now', 'today', 
-        'this year', 'currently', 'nowadays', 'up to date',
-        'modern', 'contemporary', 'updated'
-    ]
-    query_lower = query.lower()
-    return any(word in query_lower for word in temporal_words)
-
-
-def should_append_year(query: str) -> bool:
-    """Determine if current year should be appended to query."""
-    return not has_year_reference(query) and not has_temporal_keywords(query)
+from utils import has_year_reference, has_temporal_keywords, should_append_year
 
 
 def process_hook_input() -> None:

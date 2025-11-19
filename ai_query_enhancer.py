@@ -15,16 +15,22 @@ Usage examples:
 
 import json
 import sys
-import re
 import click
 from datetime import datetime
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional
 from enum import Enum
+
+from utils import (
+    enhance_with_year,
+    enhance_with_context,
+    enhance_with_technical_focus,
+    enhance_with_australian_context,
+)
 
 
 class ToolType(str, Enum):
     CLAUDE = "claude"
-    CODEX = "codex" 
+    CODEX = "codex"
     GEMINI = "gemini"
     CURSOR = "cursor"
     COPILOT = "copilot"
@@ -35,50 +41,6 @@ class EnhancementMode(str, Enum):
     CONTEXT_INJECT = "context-inject"
     TECHNICAL_FOCUS = "tech-focus"
     AUSTRALIAN_CONTEXT = "au-context"
-
-
-def has_year_reference(query: str) -> bool:
-    """Check if query contains a year reference."""
-    return bool(re.search(r'\b20\d{2}\b', query))
-
-
-def has_temporal_keywords(query: str) -> bool:
-    """Check if query contains temporal keywords."""
-    temporal_words = [
-        'latest', 'recent', 'current', 'new', 'now', 'today', 
-        'this year', 'currently', 'nowadays', 'up to date',
-        'modern', 'contemporary', 'updated', 'cutting edge'
-    ]
-    return any(word in query.lower() for word in temporal_words)
-
-
-def enhance_with_year(query: str) -> str:
-    """Add current year if query lacks temporal context."""
-    if not has_year_reference(query) and not has_temporal_keywords(query):
-        current_year = str(datetime.now().year)
-        return f'{query} {current_year}'
-    return query
-
-
-def enhance_with_context(query: str, context: str) -> str:
-    """Inject contextual information into query."""
-    return f"In the context of {context}: {query}"
-
-
-def enhance_with_technical_focus(query: str) -> str:
-    """Add technical development context."""
-    tech_keywords = ['best practices', 'production ready', 'TypeScript', 'modern approach']
-    if not any(keyword.lower() in query.lower() for keyword in tech_keywords):
-        return f"{query} (focus on modern development practices and TypeScript where applicable)"
-    return query
-
-
-def enhance_with_australian_context(query: str) -> str:
-    """Add Australian context where relevant."""
-    au_indicators = ['legal', 'tax', 'regulation', 'compliance', 'business', 'government']
-    if any(indicator in query.lower() for indicator in au_indicators):
-        return f"{query} (Australian context)"
-    return query
 
 
 def enhance_query(query: str, mode: EnhancementMode, context: Optional[str] = None) -> str:

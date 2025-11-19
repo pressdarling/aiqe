@@ -1,0 +1,36 @@
+[project]
+name = "aiqe"
+version = "0.1.0"
+description = "AI Query Enhancer - Enhance queries for AI coding tools"
+requires-python = ">=3.8"
+dependencies = [
+    "click",
+    "pydantic",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=. --cov-report=term-missing --cov-report=html"
+
+[tool.coverage.run]
+omit = ["tests/*", "aiqe.py"]
+source = ["."]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-cov>=5.0.0",
+]
