@@ -4,7 +4,7 @@
 
 # Install dependencies and make scripts executable
 install:
-	pip install click pydantic
+	uv pip install click pydantic
 	chmod +x claude_year_hook.py
 	chmod +x ai_query_enhancer.py
 

@@ -169,7 +169,7 @@ make setup-shell
 #### Manual Setup
 ```bash
 # Install Python dependencies
-pip install click pydantic
+uv pip install click pydantic
 
 # Make scripts executable
 chmod +x claude_year_hook.py ai_query_enhancer.py
@@ -279,6 +279,11 @@ def format_for_tool(enhanced_query: str, tool: ToolType, original_data: Dict[str
 - **click** - CLI framework
 - **pydantic** - Data validation (imported but not heavily used)
 - **Python stdlib:** json, sys, re, datetime, typing, enum
+
+### Package Management
+- **Preferred tool:** `uv` (fast Rust-based Python package manager)
+- **Install with:** `uv pip install click pydantic`
+- **Alternative:** Standard `pip` works but `uv` is faster
 
 ### Temporal Detection Logic
 **Year reference:** Regex `r'20\d{2}'` matches 2000-2099
