@@ -17,7 +17,7 @@ from typing import Dict, Any, Optional
 
 def has_year_reference(query: str) -> bool:
     """Check if query contains a year reference (2000-2099)."""
-    return bool(re.search(r'20\d{2}', query))
+    return bool(re.search(r'\b20\d{2}\b', query))
 
 
 def has_temporal_keywords(query: str) -> bool:
@@ -38,7 +38,9 @@ def should_append_year(query: str) -> bool:
 
 def process_hook_input() -> None:
     """Main hook processing function."""
+    input_data = None
     try:
+        # Read stdin once and store for potential reuse
         input_data = json.load(sys.stdin)
         tool_input = input_data.get('tool_input', {})
         query = tool_input.get('query', '')
@@ -75,18 +77,14 @@ def process_hook_input() -> None:
 
     except Exception as e:
         # On error, pass through original input unchanged
-        try:
-            input_data = json.load(sys.stdin)
-            output = {
-                'hookSpecificOutput': {
-                    'hookEventName': 'PreToolUse',
-                    'modifiedToolInput': input_data.get('tool_input', {})
-                }
+        modified_tool_input = input_data.get('tool_input', {}) if input_data is not None else {}
+        output = {
+            'hookSpecificOutput': {
+                'hookEventName': 'PreToolUse',
+                'modifiedToolInput': modified_tool_input
             }
-            print(json.dumps(output))
-        except:
-            # Fallback empty response
-            print(json.dumps({'hookSpecificOutput': {'hookEventName': 'PreToolUse', 'modifiedToolInput': {}}}))
+        }
+        print(json.dumps(output))
         sys.exit(1)
 
 
